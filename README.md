@@ -1,6 +1,10 @@
 # elresolver
 Logging undefined jsp variables
 
+## Warning
+This code adds an additional ELResolver. It should only be used on an development environment to fix the problems described here.
+NEVER add this to your production code, it could throw a JasperException at each jsp. It caused your site not to render.
+
 ## Why
 When using jsp as front-end technology and updating from tomcat 7 to tomcat 8 (https://tomcat.apache.org/migration-8.html#JavaServer_Pages_2.3) performance
 problems occur. Each time a variable is undefined it will be looked up in the classpath.

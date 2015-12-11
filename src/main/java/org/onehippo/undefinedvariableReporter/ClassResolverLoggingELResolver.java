@@ -1,12 +1,23 @@
-package org.onehippo.undefinedvariableReporter;
+package org.onehippo.undefinedvariablereporter;
 
 import javax.el.*;
 import javax.servlet.jsp.el.ScopedAttributeELResolver;
 
+import org.onehippo.undefinedvariablereporter.reporter.api.UndefinedVariableReporter;
 
-public abstract class ClassResolverLoggingELResolver extends ScopedAttributeELResolver {
+
+public abstract class ClassResolverLoggingELResolver extends ScopedAttributeELResolver implements UndefinedVariableReporter {
 
 
+    private UndefinedVariableReporter undefinedVariableReporter;
+
+    public ClassResolverLoggingELResolver(final UndefinedVariableReporter undefinedVariableReporter) {
+        this.undefinedVariableReporter = undefinedVariableReporter;
+    }
+
+    public ClassResolverLoggingELResolver() {
+        this(null);
+    }
 
     @Override
     public Object getValue(ELContext context, Object base, Object property) {
@@ -26,7 +37,7 @@ public abstract class ClassResolverLoggingELResolver extends ScopedAttributeELRe
             return new ImportHandler() {
                 @Override
                 public Class<?> resolveStatic(final String name) {
-                    reportUndefinedVariable(name);
+                    report(name);
                     return null;
                 }
             };
@@ -53,7 +64,11 @@ public abstract class ClassResolverLoggingELResolver extends ScopedAttributeELRe
         }
     }
 
-    public abstract void reportUndefinedVariable(final String name);
+    public void report(final String name){
+        if (undefinedVariableReporter!=null){
+            undefinedVariableReporter.report(name);
+        }
+    }
 
 
 }

@@ -5,5 +5,5 @@ package org.onehippo.undefinedvariablereporter.reporter.api;
  */
 public interface UndefinedVariableReporter {
 
-    public void report(String name);
+    void report(String name);
 }

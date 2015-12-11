@@ -1,4 +1,4 @@
-package org.onehippo.undefinedvariableReporter;
+package org.onehippo.undefinedvariablereporter;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -7,6 +7,8 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.jsp.JspApplicationContext;
 import javax.servlet.jsp.JspFactory;
 
+import org.onehippo.undefinedvariablereporter.reporter.LoggingUndefinedVariableReporter;
+
 
 @WebListener
 public class ClassResolverLoggingConfig implements ServletContextListener {
@@ -14,12 +16,7 @@ public class ClassResolverLoggingConfig implements ServletContextListener {
     public void contextInitialized(ServletContextEvent event) {
         ServletContext servletContext = event.getServletContext();
         JspApplicationContext jspContext = JspFactory.getDefaultFactory().getJspApplicationContext(servletContext);
-        jspContext.addELResolver(new ClassResolverLoggingELResolver() {
-            @Override
-            public void reportUndefinedVariable(final String name) {
-
-            }
-        });
+        jspContext.addELResolver(new LoggingUndefinedVariableReporter());
     }
 
     @Override
